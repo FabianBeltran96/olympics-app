@@ -4,7 +4,7 @@
       <img src="../assets/logo-quick.png" class="login-icon" />
 
       <p class="login-msg">Bienvenido, ingresa tus credenciales</p>
-      <form >
+      <form>
         <div class="login-input">
           <label for="email">Correo Electronico</label>
           <input v-model="email" id="email" type="email" />
@@ -14,7 +14,9 @@
           <input v-model="password" id="password" type="password" />
         </div>
 
-        <button @click.prevent="iniciarSesion" class="login-btn">Ingresar</button>
+        <button @click.prevent="iniciarSesion" class="login-btn">
+          Ingresar
+        </button>
       </form>
     </article>
   </main>
@@ -37,8 +39,6 @@ export default {
         email: this.email,
         password: this.password,
       };
-
-      console.log(datosLogin)
       axios
         .post(url, datosLogin)
         .then((response) => {
@@ -49,7 +49,7 @@ export default {
           if (error.response.status == "401") {
             alert("ERROR 401: Credenciales Incorrectas.");
           } else {
-            console.log(error);
+            alert("ERROR");
           }
         });
     },
@@ -58,7 +58,6 @@ export default {
 </script>
 
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap");
 
 main {
   width: 100vw;
