@@ -4,24 +4,57 @@
       <img src="../assets/logo-quick.png" class="login-icon" />
 
       <p class="login-msg">Bienvenido, ingresa tus credenciales</p>
-      <form>
+      <form >
         <div class="login-input">
           <label for="email">Correo Electronico</label>
-          <input id="email" type="email" />
+          <input v-model="email" id="email" type="email" />
         </div>
         <div class="login-input">
           <label for="password">Contraseña</label>
-          <input id="password" type="password" />
+          <input v-model="password" id="password" type="password" />
         </div>
 
-        <button class="login-btn">Ingresar</button>
+        <button @click.prevent="iniciarSesion" class="login-btn">Ingresar</button>
       </form>
     </article>
   </main>
 </template>
 
 <script>
-export default {};
+import axios from "axios";
+export default {
+  name: "LoginView",
+  data() {
+    return {
+      email: "",
+      password: "",
+    };
+  },
+  methods: {
+    iniciarSesion: async function () {
+      let url = `http://localhost:8000/auth/login`;
+      let datosLogin = {
+        email: this.email,
+        password: this.password,
+      };
+
+      console.log(datosLogin)
+      axios
+        .post(url, datosLogin)
+        .then((response) => {
+          localStorage.setItem("token", response.data.access_token);
+          this.$router.push({ path: "/home" });
+        })
+        .catch((error) => {
+          if (error.response.status == "401") {
+            alert("ERROR 401: Credenciales Incorrectas.");
+          } else {
+            console.log(error);
+          }
+        });
+    },
+  },
+};
 </script>
 
 <style lang="scss">

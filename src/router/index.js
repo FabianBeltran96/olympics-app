@@ -4,7 +4,7 @@ import LoginView from '../views/LoginView.vue'
 
 const routes = [
   {
-    path: '/',
+    path: '/home',
     name: 'home',
     component: HomeView
   },
