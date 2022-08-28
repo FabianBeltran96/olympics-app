@@ -1,0 +1,18 @@
+{
+    "users": [
+        {
+            "id": 1,
+            "username": "usuarioAdmin",
+            "email": "admin@email.com",
+            "password": "admin",
+            "usertype": "admin"
+        },
+        {
+            "id": 2,
+            "username": "usuarioCoordinador",
+            "email": "coordinador@email.com",
+            "password": "coordinador",
+            "usertype": "coordinador"
+        }
+    ]
+}
