@@ -3,6 +3,8 @@ import { createStore } from 'vuex'
 export default createStore({
   state: {
     estaLogeado: !!localStorage.getItem("token"),
+
+
   },
   getters: {
     getEstaLogeado(state) {
@@ -15,7 +17,7 @@ export default createStore({
       state.estaLogeado = !!localStorage.getItem("token");
     },
 
-    
+
 
 
   },

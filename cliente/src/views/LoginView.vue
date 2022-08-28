@@ -44,9 +44,7 @@ export default {
         .post(url, datosLogin)
         .then((response) => {
           localStorage.setItem("token", response.data.access_token);
-
           store.commit("estaAutenticado");
-
           this.$router.push({ path: "/home" });
         })
         .catch((error) => {

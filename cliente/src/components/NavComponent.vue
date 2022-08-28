@@ -2,7 +2,7 @@
   <nav class="nav">
     <img src="../assets/logo-quick.png" class="nav-icon" />
     <div class="nav-tabs">
-      <router-link to="/">
+      <router-link to="/athletes">
         <i class="fa-solid fa-ranking-star"></i>
         Atletas
       </router-link>
@@ -26,9 +26,7 @@ export default {
   methods: {
     cerrarSesion() {
       localStorage.setItem("token", "");
-
       store.commit("estaAutenticado");
-
       this.$router.push({ path: "/login" });
     },
   },
