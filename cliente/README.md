@@ -1,24 +1,19 @@
 # olympics-app-quick
 
-## Project setup
+##  Configuración del proyecto
+
+Para instalar dependencias:
+
 ```
 npm install
 ```
-
-### Compiles and hot-reloads for development
+### Para correr el cliente
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+### Y se habilitara el siguiente link 
 
-### Lints and fixes files
 ```
-npm run lint
+http://localhost:8080/#/login
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).

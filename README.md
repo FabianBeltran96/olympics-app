@@ -1,4 +1,26 @@
-# JSONServer + JWT Auth
+# olympics-app-quick
+
+## Configuración del proyecto CLIENTE
+
+Para instalar dependencias:
+
+```
+npm install
+```
+
+### Para correr el cliente
+
+```
+npm run serve
+```
+
+### Y se habilitara el siguiente link
+
+```
+http://localhost:8080/#/login
+```
+
+## Configuración del proyecto SERVIDOR (Fake JSON)
 
 ## Instalación
 
