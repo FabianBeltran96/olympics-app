@@ -24,6 +24,7 @@
 
 <script>
 import axios from "axios";
+import store from "../store/index.js";
 export default {
   name: "LoginView",
   data() {
@@ -43,6 +44,9 @@ export default {
         .post(url, datosLogin)
         .then((response) => {
           localStorage.setItem("token", response.data.access_token);
+
+          store.commit("estaAutenticado");
+
           this.$router.push({ path: "/home" });
         })
         .catch((error) => {
@@ -54,11 +58,18 @@ export default {
         });
     },
   },
+
+  created() {
+    if (this.$store.getters.getEstaLogeado) {
+      this.$router.push({ path: "/home" });
+    } else {
+      this.$router.push({ path: "/login" });
+    }
+  },
 };
 </script>
 
 <style lang="scss">
-
 main {
   width: 100vw;
   height: 100vh;
