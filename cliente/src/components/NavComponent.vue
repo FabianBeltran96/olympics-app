@@ -6,12 +6,12 @@
         <i class="fa-solid fa-ranking-star"></i>
         Atletas
       </router-link>
-
       <router-link to="/medals">
         <i class="fa-solid fa-medal"></i>
         Medallas
       </router-link>
     </div>
+    <h3>{{tipoUsuario}}</h3>
     <div @click="cerrarSesion" class="nav-logout">
       <i class="fa-solid fa-right-from-bracket"></i>
       <p>Cerrar Sesión</p>
@@ -21,8 +21,16 @@
 
 <script>
 import store from "../store/index.js";
+import jwt_decode from "jwt-decode";
 export default {
   name: "NavComponent",
+
+  data: function () {
+    return {
+      tipoUsuario: "",
+    };
+  },
+
   methods: {
     cerrarSesion() {
       localStorage.setItem("token", "");
@@ -30,12 +38,18 @@ export default {
       this.$router.push({ path: "/login" });
     },
   },
+
+  created() {
+    let token = localStorage.getItem("token");
+    let decode = jwt_decode(token);
+    this.tipoUsuario = decode.usertype;
+  },
 };
 </script>
 
 <style scoped lang="scss">
 .nav {
-  max-width: 100%;
+  max-width: 100vw;
   height: 3rem;
 
   padding: 1rem;
@@ -66,6 +80,11 @@ export default {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    padding: 0.25rem 0.5rem;
+    border-radius: 6px;
+
+    background: rgb(240, 201, 2, 0.5);
 
     cursor: pointer;
 

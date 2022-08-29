@@ -2,51 +2,104 @@
   <div class="contenedor">
     <div class="options">
       <div class="options-group">
-        <h1>Cantidad de elementos por páginas</h1>
+        <h1>Atletas por páginas</h1>
         <div class="options-radiobutton">
-          <input type="radio" id="option5" value="5" v-model.number="size" />
+          <input type="radio" id="option5" value="5" v-model.number="tamaño" />
           <label for="option5">5</label>
         </div>
         <div class="options-radiobutton">
-          <input type="radio" id="option10" value="10" v-model.number="size" />
+          <input
+            type="radio"
+            id="option10"
+            value="10"
+            v-model.number="tamaño"
+          />
           <label for="option10">10</label>
         </div>
         <div class="options-radiobutton">
-          <input type="radio" id="option20" value="20" v-model.number="size" />
+          <input
+            type="radio"
+            id="option20"
+            value="20"
+            v-model.number="tamaño"
+          />
           <label for="option20">20</label>
         </div>
+      </div>
+
+      <div class="options-group">
+        <h1>Filtros</h1>
+
+        <div class="options-filter">
+          <label>Pais</label>
+          <input list="paises" type="search" id="pais" v-model="filtroPais" />
+          <datalist id="paises">
+            <option
+              v-for="pais in listadoPais"
+              :key="pais"
+              :value="pais"
+            ></option>
+          </datalist>
+        </div>
+        <div class="options-filter">
+          <label>Deporte</label>
+          <input
+            list="deportes"
+            type="search"
+            id="deporte"
+            v-model="filtroDeporte"
+          />
+
+          <datalist id="deportes">
+            <option
+              v-for="deporte in listadoDeportes"
+              :key="deporte"
+              :value="deporte"
+            ></option>
+          </datalist>
+        </div>
+        <button @click="filtroActivado" class="btn-primary">
+          <i class="fa-solid fa-magnifying-glass"></i>
+        </button>
+        <button @click="filtroDesactivado" class="btn-primary">
+          <i class="fa-solid fa-trash"></i>
+        </button>
       </div>
     </div>
     <table>
       <thead>
         <tr>
           <th scope="col">Atleta</th>
-          <th scope="col">Edad</th>
+          <th class="text-center" scope="col">Edad</th>
           <th scope="col">País</th>
-          <th scope="col">Año</th>
+          <th class="text-center" scope="col">Año</th>
           <th scope="col">Fecha</th>
           <th scope="col">Deporte</th>
-          <th scope="col">Oro</th>
-          <th scope="col">Plata</th>
-          <th scope="col">Bronce</th>
-          <th scope="col">Total</th>
+          <th class="text-center" scope="col">Oro</th>
+          <th class="text-center" scope="col">Plata</th>
+          <th class="text-center" scope="col">Bronce</th>
+          <th class="text-center" scope="col">Total</th>
         </tr>
       </thead>
-      <tbody
-        v-for="athlete in elementosEnPagina[pagina]"
-        :key="athlete.athlete + athlete.year"
-      >
-        <tr>
+      <tbody>
+        <tr
+          v-for="athlete in elementosEnPagina[pagina]"
+          :key="athlete.athlete + athlete.year"
+        >
           <td>{{ athlete.athlete }}</td>
-          <td>{{ athlete.age }}</td>
-          <td>{{ athlete.country }}</td>
-          <td>{{ athlete.year }}</td>
+          <td class="text-center">{{ athlete.age }}</td>
+          <td class="utility-1" @click="triggerCountry(athlete.country)">
+            {{ athlete.country }}
+          </td>
+          <td class="text-center">{{ athlete.year }}</td>
           <td>{{ athlete.date }}</td>
-          <td>{{ athlete.sport }}</td>
-          <td>{{ athlete.gold }}</td>
-          <td>{{ athlete.silver }}</td>
-          <td>{{ athlete.bronze }}</td>
-          <td>{{ athlete.total }}</td>
+          <td class="utility-1" @click="triggerSport(athlete.sport)">
+            {{ athlete.sport }}
+          </td>
+          <td class="text-center">{{ athlete.gold }}</td>
+          <td class="text-center">{{ athlete.silver }}</td>
+          <td class="text-center">{{ athlete.bronze }}</td>
+          <td class="text-center">{{ athlete.total }}</td>
         </tr>
       </tbody>
     </table>
@@ -56,7 +109,7 @@
     <button @click="disminuirPagina" class="footer-button">
       <i class="fa-solid fa-angle-left"></i>
     </button>
-    {{ pagina }} de {{ elementosEnPagina.length }}
+    {{ pagina }} de {{ elementosEnPagina.length - 1 }}
     <button @click="aumentarPagina" class="footer-button">
       <i class="fa-solid fa-angle-right"></i>
     </button>
@@ -72,45 +125,83 @@ export default {
 
   data: function () {
     return {
-      athletes: [],
+      atletas: [],
       elementosEnPagina: [],
-      size: 20,
+      tamaño: 20,
       pagina: 1,
+      filtroDeporte: "",
+      filtroPais: "",
+      listadoDeportes: [],
+      listadoPais: [],
     };
   },
 
   methods: {
     getInfo: async function () {
       let tokenStr = localStorage.getItem("token");
-
       let url = `http://localhost:8000/athletes`;
-      axios
+      await axios
         .get(url, { headers: { Authorization: `Bearer ${tokenStr}` } })
         .then((response) => {
-          this.athletes = response.data;
-
-          let quantity = 0;
-          let pagina = [];
-          let elementosEnPagina = [[]];
-          this.athletes.forEach((athlete) => {
-            if (quantity == this.size) {
-              elementosEnPagina.push(pagina);
-              pagina = [];
-              quantity = 0;
-            } else {
-              pagina.push(athlete);
-              quantity++;
-            }
-          });
-          this.elementosEnPagina = elementosEnPagina;
+          this.atletas = response.data;
         })
         .catch((error) => {
           console.log(error);
         });
     },
 
+    actualizarTabla: function () {
+      let cantidad = 0;
+      let pagina = [];
+      let elementosEnPagina = [[]];
+      this.tableFilter.forEach((athlete) => {
+        if (cantidad == this.tamaño) {
+          elementosEnPagina.push(pagina);
+          pagina = [];
+          cantidad = 0;
+        } else {
+          pagina.push(athlete);
+          cantidad++;
+        }
+      });
+      elementosEnPagina.push(pagina);
+
+      this.elementosEnPagina = elementosEnPagina;
+    },
+
+    triggerCountry(Country) {
+      this.filtroPais = Country;
+    },
+    triggerSport(Sport) {
+      this.filtroDeporte = Sport;
+    },
+
+    obtenerPaises() {
+      let todosPaises = [];
+      for (const atleta of this.atletas) {
+        todosPaises.push(atleta.country);
+      }
+
+      let paises = todosPaises.filter(function (item, pos) {
+        return todosPaises.indexOf(item) == pos;
+      });
+      this.listadoPais = paises.sort((a, b) => a.localeCompare(b));
+    },
+
+    obtenerDeportes() {
+      let todosDeportes = [];
+      for (const atleta of this.atletas) {
+        todosDeportes.push(atleta.sport);
+      }
+
+      let deportes = todosDeportes.filter(function (item, pos) {
+        return todosDeportes.indexOf(item) == pos;
+      });
+      this.listadoDeportes = deportes.sort((a, b) => a.localeCompare(b));
+    },
+
     aumentarPagina() {
-      if (!(this.pagina === this.elementosEnPagina.length)) {
+      if (!(this.pagina === this.elementosEnPagina.length - 1)) {
         this.pagina++;
       }
     },
@@ -120,24 +211,43 @@ export default {
         this.pagina--;
       }
     },
-  },
 
-  watch: {
-    size: async function () {
-      this.getInfo();
+    filtroActivado() {
+      this.actualizarTabla();
+      this.pagina = 1;
+    },
+
+    filtroDesactivado() {
+      this.filtroPais = "";
+      this.filtroDeporte = "";
+      this.actualizarTabla();
+      this.pagina = 1;
     },
   },
 
-  created() {
-    try {
-      this.getInfo();
-    } catch (error) {
-      console.log(error);
-    }
+  watch: {
+    tamaño: function () {
+      this.actualizarTabla();
+      this.pagina = 1;
+    },
+  },
 
+  computed: {
+    tableFilter() {
+      if (this.atletas) {
+        return this.atletas.filter(
+          (item) =>
+            item.sport.includes(this.filtroDeporte) &&
+            item.country.includes(this.filtroPais)
+        );
+      } else {
+        return this.atletas;
+      }
+    },
+  },
+  beforeCreate: function () {
     let token = localStorage.getItem("token");
     let decode = jwt_decode(token);
-    console.log(decode)
 
     if (decode.usertype === "admin") {
       this.$router.push({ path: "/athletes" });
@@ -145,13 +255,21 @@ export default {
       this.$router.push({ path: "/error" });
     }
   },
+  created: async function () {
+    await this.getInfo();
+    this.actualizarTabla();
+
+    this.obtenerPaises();
+    this.obtenerDeportes();
+  },
 };
 </script>
 
 <style lang="scss">
 table {
-  max-width: 100vw;
   width: 100%;
+  min-width: 940px;
+  overflow-x: auto;
 
   padding: 0 2rem;
   font-family: "Roboto", sans-serif;
@@ -168,7 +286,7 @@ td {
 }
 
 tbody tr:hover {
-  background-color: rgb(255, 255, 0, 0.3);
+  background-color: rgba(255, 255, 0, 0.606);
 }
 thead tr {
   text-align: left;
@@ -178,12 +296,14 @@ thead tr {
 td {
   color: rgb(39, 38, 38);
 }
+
+.text-center {
+  text-align: center;
+}
 .contenedor {
   display: flex;
   flex-direction: column;
   max-width: 100vw;
-  //   justify-content: center;
-  //   align-items: center;
   margin: 0 0 5rem 0;
 }
 
@@ -202,15 +322,18 @@ td {
     justify-content: center;
     align-items: center;
 
-    background: #ddd;
-    border-radius: 8px;
+    background: rgba(253, 212, 0, 0.5);
+    border-radius: 0.5rem;
+    margin: 0 1rem;
 
     & h1 {
+      font-size: 20px;
       margin: 0 1rem;
     }
   }
 
-  &-radiobutton {
+  &-radiobutton,
+  &-filter {
     padding: 1rem;
 
     & input {
@@ -249,6 +372,28 @@ td {
     & i {
       font-size: 24px;
     }
+  }
+}
+.btn-primary {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  padding: 6px;
+  margin: 0 0.5rem;
+  background: black;
+  color: white;
+  border: none;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+}
+
+.utility-1 {
+  cursor: pointer;
+  transition: cubic-bezier(0, 1.46, 1, -1.67) 1s;
+
+  &:hover {
+    background: rgb(77, 203, 205);
   }
 }
 </style>

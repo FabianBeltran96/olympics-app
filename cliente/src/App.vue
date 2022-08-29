@@ -4,7 +4,6 @@
 </template>
 <script>
 import NavComponent from "@/components/NavComponent.vue";
-// import store from "@/store/index";
 
 export default {
   components: {
