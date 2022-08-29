@@ -45,7 +45,7 @@ POST http://localhost:8000/auth/login
 
 Con la siguiente información
 
-```
+
 ### Usuario de tipo admin
   email: admin@email.com,
   password:admin
@@ -53,7 +53,7 @@ Con la siguiente información
 ### Usuario de tipo coordinador
   email: coordinador@email.com,
   password:coordinador
-```
+
 
 Deberias recibir un token con el siguiente formato:
 
