@@ -11,10 +11,12 @@
         Medallas
       </router-link>
     </div>
-    <h3>{{tipoUsuario}}</h3>
-    <div @click="cerrarSesion" class="nav-logout">
-      <i class="fa-solid fa-right-from-bracket"></i>
-      <p>Cerrar Sesión</p>
+    <div class="nav-user">
+      <h3>{{ tipoUsuario }}</h3>
+      <div @click="cerrarSesion" class="nav-logout">
+        <i class="fa-solid fa-right-from-bracket"></i>
+        <p>Cerrar Sesión</p>
+      </div>
     </div>
   </nav>
 </template>
@@ -62,12 +64,16 @@ export default {
   align-items: center;
 
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-
+  position: relative;
   &-icon {
     width: 6rem;
   }
 
   &-tabs {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     a {
       margin: 0 8px;
       color: inherit; /* blue colors for links too */
@@ -89,6 +95,13 @@ export default {
     cursor: pointer;
 
     i {
+      margin: 0 8px;
+    }
+  }
+
+  &-user {
+    display: flex;
+    h3 {
       margin: 0 8px;
     }
   }

@@ -171,9 +171,11 @@ export default {
 
     triggerCountry(Country) {
       this.filtroPais = Country;
+      this.actualizarTabla();
     },
     triggerSport(Sport) {
       this.filtroDeporte = Sport;
+      this.actualizarTabla();
     },
 
     obtenerPaises() {
@@ -390,10 +392,10 @@ td {
 
 .utility-1 {
   cursor: pointer;
-  transition: cubic-bezier(0, 1.46, 1, -1.67) 1s;
+  transition: 1s;
 
   &:hover {
-    background: rgb(77, 203, 205);
+    background: rgb(245, 214, 60);
   }
 }
 </style>
