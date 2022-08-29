@@ -138,10 +138,9 @@ export default {
 
   methods: {
     getInfo: async function () {
-      let tokenStr = localStorage.getItem("token");
-      let url = `http://localhost:8000/athletes`;
+      let url = `https://raw.githubusercontent.com/ag-grid/ag-grid/master/grid-packages/ag-grid-docs/src/olympicWinners.json`;
       await axios
-        .get(url, { headers: { Authorization: `Bearer ${tokenStr}` } })
+        .get(url)
         .then((response) => {
           this.atletas = response.data;
         })
@@ -149,7 +148,6 @@ export default {
           console.log(error);
         });
     },
-
     actualizarTabla: function () {
       let cantidad = 0;
       let pagina = [];
