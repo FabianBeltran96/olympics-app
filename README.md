@@ -46,14 +46,13 @@ POST http://localhost:8000/auth/login
 Con la siguiente información
 
 ```
-{
-  "email": "admin@email.com",
-  "password":"admin"
-}
-{
-  "email": "coordinador@email.com",
-  "password":"coordinador"
-}
+### Usuario de tipo admin
+  email: admin@email.com,
+  password:admin
+
+### Usuario de tipo coordinador
+  email: coordinador@email.com,
+  password:coordinador
 ```
 
 Deberias recibir un token con el siguiente formato:
